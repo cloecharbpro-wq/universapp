@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>UNIVERSE — Media Tracker</title>
+
+<!-- ═══ PWA META ═══ -->
+<!-- manifest injected inline via JS -->
+<meta name="theme-color" content="#e8281e" id="theme-color-meta">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="UNIVERSE">
+
+<!-- ═══ iOS / Safari ═══ -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="UNIVERSE">
+
+
+
+
+<!-- ═══ Splash screens iOS ═══ -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- ═══ Microsoft / Windows ═══ -->
+<meta name="msapplication-TileImage" content="icons/icon-144.png">
+<meta name="msapplication-TileColor" content="#0a0000">
+<meta name="msapplication-config" content="none">
+
+<!-- ═══ SEO / Open Graph ═══ -->
+<meta name="description" content="Gérez vos films, séries, livres et jeux vidéo avec notation détaillée et classements.">
+<meta property="og:title" content="UNIVERSE — Media Tracker">
+<meta property="og:description" content="Votre bibliothèque de médias personnelle">
+<meta property="og:type" content="website">
+
+<!-- ═══ Favicon ═══ -->
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    --radius: 16px;
+    --radius-sm: 8px;
+    --shadow: 0 8px 40px rgba(0,0,0,0.4);
+    --shadow-sm: 0 4px 16px rgba(0,0,0,0.25);
+  }
+
+  /* ===== UNIVERSE THEMES ===== */
+  body[data-universe="films"] {
+    --bg1: #0a0000; --bg2: #1a0505;
+    --accent: #e8281e; --accent2: #ff6b5e;
+    --card-bg: rgba(30,8,8,0.85);
+    --card-border: rgba(232,40,30,0.25);
+    --text: #f5e6e6; --text-dim: #a88080;
+    --nav-bg: rgba(10,0,0,0.9);
+    --bar-color: #e8281e;
+    --glow: rgba(232,40,30,0.3);
+    --pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e8281e' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  body[data-universe="series"] {
+    --bg1: #00050f; --bg2: #080520;
+    --accent: #6c5ce7; --accent2: #a29bfe;
+    --card-bg: rgba(12,8,35,0.85);
+    --card-border: rgba(108,92,231,0.25);
+    --text: #e8e4ff; --text-dim: #8b83c4;
+    --nav-bg: rgba(0,5,15,0.9);
+    --bar-color: #6c5ce7;
+    --glow: rgba(108,92,231,0.3);
+    --pattern: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236c5ce7' fill-opacity='0.05'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  body[data-universe="livres"] {
+    --bg1: #010a04; --bg2: #061408;
+    --accent: #27ae60; --accent2: #6fcf97;
+    --card-bg: rgba(4,18,8,0.85);
+    --card-border: rgba(39,174,96,0.25);
+    --text: #e6f4ec; --text-dim: #7aab8f;
+    --nav-bg: rgba(1,10,4,0.9);
+    --bar-color: #27ae60;
+    --glow: rgba(39,174,96,0.3);
+    --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='24'%3E%3Cellipse fill='%2327ae60' fill-opacity='0.05' cx='43.5' cy='11.5' rx='26.5' ry='10.5'/%3E%3C/svg%3E");
+  }
+  body[data-universe="jeux"] {
+    --bg1: #050200; --bg2: #120800;
+    --accent: #f39c12; --accent2: #fdcb6e;
+    --card-bg: rgba(20,10,0,0.85);
+    --card-border: rgba(243,156,18,0.25);
+    --text: #fff8ec; --text-dim: #b09060;
+    --nav-bg: rgba(5,2,0,0.9);
+    --bar-color: #f39c12;
+    --glow: rgba(243,156,18,0.3);
+    --pattern: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f39c12' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--bg1);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background-color 0.6s ease, color 0.3s ease;
+    data-universe: films;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 60% at 20% 20%, var(--glow) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, var(--glow) 0%, transparent 50%),
+      var(--pattern),
+      linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+    z-index: -1;
+    transition: all 0.6s ease;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg1); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0 24px;
+    display: flex; align-items: center; gap: 12px;
+    height: 64px;
+    transition: background var(--transition);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-shadow: 0 0 20px var(--glow);
+    flex-shrink: 0;
+    margin-right: 12px;
+  }
+
+  .nav-universes {
+    display: flex; gap: 4px; flex: 1;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .nav-universes::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 18px;
+    border: 1px solid transparent;
+    border-radius: 100px;
+    background: transparent;
+    color: var(--text-dim);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition);
+  }
+  .nav-btn:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .nav-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--glow);
+  }
+  .nav-btn span.emoji { font-size: 16px; }
+
+  .nav-actions { display: flex; gap: 8px; margin-left: auto; flex-shrink: 0; }
+
+  .btn-icon {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+  }
+  .btn-icon:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* ===== MAIN ===== */
+  main {
+    padding-top: 84px;
+    padding-bottom: 40px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* ===== UNIVERSE HEADER ===== */
+  .universe-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 32px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .universe-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--text);
+    position: relative;
+  }
+  .universe-title span {
+    display: block;
+    font-size: 0.35em;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    letter-spacing: 6px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .universe-stats {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .stat-pill {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: var(--text-dim);
+    backdrop-filter: blur(10px);
+  }
+  .stat-pill strong { color: var(--accent); font-size: 18px; margin-right: 4px; }
+
+  /* ===== FILTERS ===== */
+  .filters-bar {
+    display: flex; gap: 8px; align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--text-dim);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all var(--transition);
+    backdrop-filter: blur(10px);
+  }
+  .filter-btn:hover { color: var(--text); border-color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .filter-btn.heart.active { background: #e84393; border-color: #e84393; }
+
+  select.filter-select {
+    padding: 7px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--text-dim);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all var(--transition);
+    backdrop-filter: blur(10px);
+    outline: none;
+  }
+  select.filter-select:hover, select.filter-select:focus { border-color: var(--accent); color: var(--text); }
+
+  /* ===== GRID ===== */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  /* ===== CARD ===== */
+  .media-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+    backdrop-filter: blur(10px);
+    animation: cardIn 0.4s ease both;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .media-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: var(--accent);
+    box-shadow: 0 20px 60px var(--glow), var(--shadow);
+  }
+
+  .card-cover {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    display: block;
+    background: var(--bg2);
+    position: relative;
+  }
+
+  .card-cover-placeholder {
+    width: 100%;
+    aspect-ratio: 2/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--bg2), var(--bg1));
+    font-size: 48px;
+  }
+
+  .card-cover img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .media-card:hover .card-cover img { transform: scale(1.05); }
+
+  .card-rank {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px var(--glow);
+    z-index: 2;
+  }
+
+  .card-heart {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    border: none;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all var(--transition);
+    z-index: 2;
+  }
+  .card-heart:hover, .card-heart.active { background: rgba(232,67,147,0.8); transform: scale(1.2); }
+
+  .card-body {
+    padding: 14px;
+  }
+
+  .card-title {
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .card-meta {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .card-score-row {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .card-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .card-score small {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  .score-bar-mini {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .score-bar-mini-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .card-platform {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .card-progress {
+    margin-top: 8px;
+  }
+  .card-progress-text {
+    font-size: 11px; color: var(--text-dim); margin-bottom: 4px;
+  }
+  .card-progress-bar {
+    height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;
+  }
+  .card-progress-fill {
+    height: 100%; background: var(--accent); border-radius: 2px;
+  }
+
+  /* ===== ADD CARD ===== */
+  .add-card {
+    background: var(--card-bg);
+    border: 2px dashed var(--card-border);
+    border-radius: var(--radius);
+    aspect-ratio: 2/3; /* will be overridden to be shorter */
+    min-height: 200px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    color: var(--text-dim);
+    font-size: 14px;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+  }
+  .add-card:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255,255,255,0.04);
+    transform: scale(1.02);
+  }
+  .add-card-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    border: 2px dashed currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 80px 40px;
+    color: var(--text-dim);
+  }
+  .empty-state .empty-icon { font-size: 64px; margin-bottom: 16px; }
+  .empty-state h3 { font-size: 20px; color: var(--text); margin-bottom: 8px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ===== MODAL OVERLAY ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity var(--transition);
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    width: 100%; max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px) scale(0.97);
+    transition: transform var(--transition);
+    box-shadow: var(--shadow), 0 0 60px var(--glow);
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+  .modal-header {
+    padding: 28px 28px 20px;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    border-bottom: 1px solid var(--card-border);
+    position: sticky; top: 0;
+    background: var(--bg2);
+    z-index: 5;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+
+  .modal-close {
+    background: rgba(255,255,255,0.08);
+    border: none; border-radius: 50%;
+    width: 36px; height: 36px;
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+  .modal-close:hover { background: var(--accent); }
+
+  .modal-body { padding: 24px 28px; }
+
+  /* ===== FORM ===== */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1/-1; }
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+  }
+
+  input, select, textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color var(--transition);
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 80px; }
+  select option { background: var(--bg1); color: var(--text); }
+
+  /* ===== RATING SECTION ===== */
+  .rating-section {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .rating-section h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .criterion-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .criterion-label {
+    font-size: 13px;
+    color: var(--text);
+    flex: 0 0 auto;
+    width: 200px;
+  }
+  .criterion-label small { color: var(--text-dim); font-size: 11px; margin-left: 4px; }
+
+  .criterion-input {
+    display: flex; align-items: center; gap: 8px; flex: 1;
+  }
+
+  .criterion-input input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+  .criterion-input input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--glow);
+    cursor: pointer;
+  }
+
+  .criterion-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--accent);
+    min-width: 45px;
+    text-align: right;
+  }
+
+  .total-score-display {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    border-radius: var(--radius);
+    padding: 16px 24px;
+    margin-top: 16px;
+  }
+  .total-score-display .score-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: #fff;
+    line-height: 1;
+  }
+  .total-score-display .score-info {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+  }
+  .total-score-display .score-info strong { display: block; color: #fff; font-size: 16px; }
+
+  /* ===== SERIES PROGRESS ===== */
+  .series-seasons {
+    margin-top: 16px;
+  }
+  .season-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .season-label { font-size: 13px; color: var(--text); flex: 0 0 80px; }
+  .season-input { display: flex; align-items: center; gap: 6px; }
+  .season-input input { width: 60px; text-align: center; }
+  .season-ep-label { font-size: 12px; color: var(--text-dim); }
+
+  /* ===== DETAIL MODAL ===== */
+  .detail-cover-row {
+    display: flex; gap: 24px; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .detail-cover {
+    width: 140px; flex-shrink: 0;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow-sm), 0 0 30px var(--glow);
+  }
+  .detail-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .detail-cover-placeholder {
+    width: 140px; height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--bg2), var(--bg1));
+    font-size: 48px;
+    border-radius: 12px;
+  }
+
+  .detail-info { flex: 1; }
+  .detail-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; letter-spacing: 2px;
+    color: var(--text); line-height: 1; margin-bottom: 6px;
+  }
+  .detail-meta-row {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .detail-tag {
+    padding: 4px 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    font-size: 12px; color: var(--text-dim);
+  }
+  .detail-score-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px; color: var(--accent); line-height: 1;
+  }
+  .detail-score-big small { font-size: 24px; color: var(--text-dim); font-family: 'DM Sans', sans-serif; }
+
+  .detail-heart-btn {
+    padding: 8px 20px;
+    border-radius: 100px;
+    border: 1px solid rgba(232,67,147,0.4);
+    background: rgba(232,67,147,0.1);
+    color: #e84393;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: all var(--transition);
+    margin-top: 8px;
+  }
+  .detail-heart-btn:hover, .detail-heart-btn.active {
+    background: rgba(232,67,147,0.3);
+    box-shadow: 0 0 16px rgba(232,67,147,0.4);
+  }
+  .detail-heart-btn.active { background: #e84393; color: #fff; }
+
+  /* ===== RADAR / BARS ===== */
+  .criteria-bars { margin-top: 16px; }
+  .crit-bar-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  }
+  .crit-bar-label { font-size: 13px; color: var(--text); flex: 0 0 200px; }
+  .crit-bar-track {
+    flex: 1; height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px; overflow: hidden;
+  }
+  .crit-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .crit-bar-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; color: var(--accent);
+    min-width: 50px; text-align: right;
+  }
+
+  /* Series tracking in detail */
+  .seasons-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;
+    margin-top: 12px;
+  }
+  .season-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .season-card .s-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); }
+  .season-card .s-prog { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+  .season-prog-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .season-prog-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+
+  /* ===== BUTTONS ===== */
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: 0 4px 16px var(--glow);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--glow); }
+
+  .btn-danger {
+    background: rgba(231,76,60,0.15);
+    color: #e74c3c;
+    border: 1px solid rgba(231,76,60,0.3);
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-size: 14px; cursor: pointer;
+    transition: all var(--transition);
+  }
+  .btn-danger:hover { background: rgba(231,76,60,0.3); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-size: 14px; cursor: pointer;
+    transition: all var(--transition);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+
+  .modal-footer {
+    padding: 20px 28px 28px;
+    display: flex; gap: 12px; justify-content: flex-end;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--card-border);
+  }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--accent);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-size: 14px; font-weight: 500;
+    z-index: 999;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+    box-shadow: 0 8px 32px var(--glow);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ===== RANKING SECTION ===== */
+  .ranking-section {
+    margin-bottom: 48px;
+  }
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .section-label span { color: var(--accent); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .cards-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+    .universe-header { flex-direction: column; align-items: flex-start; }
+    .criterion-label { width: 140px; font-size: 12px; }
+    .detail-cover { width: 110px; }
+    .detail-title { font-size: 28px; }
+    .crit-bar-label { flex: 0 0 150px; }
+    nav { padding: 0 14px; gap: 8px; }
+    .nav-logo { font-size: 22px; }
+    main { padding-left: 14px; padding-right: 14px; }
+    .modal-body, .modal-header, .modal-footer { padding-left: 18px; padding-right: 18px; }
+  }
+
+  @media (max-width: 480px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .criterion-label { width: 110px; }
+    .criterion-row { flex-wrap: wrap; }
+    .crit-bar-label { flex: 0 0 120px; font-size: 12px; }
+  }
+
+  /* ===== LOADING INDICATOR ===== */
+  .cover-loading {
+    width: 100%; aspect-ratio: 2/3;
+    background: linear-gradient(110deg, var(--bg2) 30%, rgba(255,255,255,0.05) 50%, var(--bg2) 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+  /* ===== RADAR CANVAS ===== */
+  .radar-container { 
+    display: flex; justify-content: center; margin: 16px 0;
+  }
+  canvas.radar { max-width: 280px; }
+
+  /* ===== HEARTBEAT ANIMATION ===== */
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+  .card-heart.active { animation: heartbeat 0.3s ease; }
+
+  /* ═══════════════════════════════════════
+     PWA — Safe Areas & Installation
+  ═══════════════════════════════════════ */
+  nav {
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+    height: calc(64px + env(safe-area-inset-top));
+  }
+  main {
+    padding-top: calc(84px + env(safe-area-inset-top));
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+    padding-bottom: max(40px, env(safe-area-inset-bottom));
+  }
+  .install-banner {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
+    padding: 16px 20px; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(135deg, var(--bg2), var(--bg1));
+    border-top: 1px solid var(--card-border);
+    backdrop-filter: blur(20px);
+    display: flex; align-items: center; gap: 14px;
+    transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
+  }
+  .install-banner.visible { transform: translateY(0); }
+  .install-banner-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: var(--accent); display: flex; align-items: center; justify-content: center;
+    font-size: 26px; flex-shrink: 0; box-shadow: 0 4px 16px var(--glow);
+  }
+  .install-banner-text { flex: 1; }
+  .install-banner-text strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .install-banner-text span { font-size: 12px; color: var(--text-dim); }
+  .install-banner-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .btn-install {
+    background: var(--accent); color: #fff; border: none; border-radius: 100px;
+    padding: 9px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all var(--transition); white-space: nowrap;
+  }
+  .btn-dismiss {
+    background: rgba(255,255,255,0.08); color: var(--text-dim);
+    border: 1px solid var(--card-border); border-radius: 100px;
+    padding: 9px 14px; font-size: 13px; cursor: pointer; transition: all var(--transition);
+  }
+  .update-banner {
+    position: fixed; top: calc(72px + env(safe-area-inset-top, 0px)); right: 16px;
+    z-index: 500; background: var(--bg2); border: 1px solid var(--accent);
+    border-radius: 14px; padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 32px var(--glow); transform: translateY(-20px) scale(0.95);
+    opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); max-width: 280px;
+  }
+  .update-banner.visible { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
+  .update-banner span { font-size: 13px; color: var(--text); flex: 1; }
+  .btn-update { background: var(--accent); color: #fff; border: none; border-radius: 100px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .offline-badge {
+    position: fixed; top: calc(70px + env(safe-area-inset-top, 0px));
+    left: 50%; transform: translateX(-50%) translateY(-60px);
+    background: #2d3436; color: #fff; border-radius: 100px; padding: 6px 16px;
+    font-size: 12px; z-index: 400; display: flex; align-items: center; gap: 6px;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); white-space: nowrap;
+  }
+  .offline-badge.visible { transform: translateX(-50%) translateY(0); }
+  .offline-dot { width: 8px; height: 8px; border-radius: 50%; background: #e74c3c; animation: pulse-dot 1.5s infinite; }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .splash {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #0a0000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .splash-logo { font-family: 'Bebas Neue', sans-serif; font-size: 72px; letter-spacing: 8px; color: #e8281e; text-shadow: 0 0 40px rgba(232,40,30,0.5); animation: splashPulse 1.5s ease infinite; }
+  .splash-sub { font-size: 13px; letter-spacing: 4px; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+  .splash-loader { width: 40px; height: 2px; background: rgba(255,255,255,0.1); border-radius: 1px; overflow: hidden; margin-top: 8px; }
+  .splash-loader-fill { height: 100%; background: #e8281e; border-radius: 1px; animation: splashLoad 1.2s cubic-bezier(0.4,0,0.2,1) forwards; }
+  @keyframes splashPulse { 0%,100%{text-shadow:0 0 20px rgba(232,40,30,.5)} 50%{text-shadow:0 0 60px rgba(232,40,30,.9)} }
+  @keyframes splashLoad { from{width:0%} to{width:100%} }
+  .toast { bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+  @media (display-mode: standalone) {
+    .nav-logo::after { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-left: 6px; vertical-align: middle; box-shadow: 0 0 6px var(--glow); }
+  }
+</style>
+</head>
+<body data-universe="films">
+
+<!-- SPLASH SCREEN -->
+<div class="splash" id="splash">
+  <div class="splash-logo">UNIVERSE</div>
+  <div class="splash-sub">Media Tracker</div>
+  <div class="splash-loader"><div class="splash-loader-fill"></div></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">UNIVERSE</div>
+  <div class="nav-universes">
+    <button class="nav-btn active" onclick="switchUniverse('films')">
+      <span class="emoji">🎬</span> Films
+    </button>
+    <button class="nav-btn" onclick="switchUniverse('series')">
+      <span class="emoji">📺</span> Séries
+    </button>
+    <button class="nav-btn" onclick="switchUniverse('livres')">
+      <span class="emoji">📚</span> Livres
+    </button>
+    <button class="nav-btn" onclick="switchUniverse('jeux')">
+      <span class="emoji">🎮</span> Jeux vidéo
+    </button>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-icon" onclick="openAddModal()" title="Ajouter">＋</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="universe-header">
+    <div class="universe-title">
+      <span id="universe-subtitle"></span>
+      <div id="universe-title-text"></div>
+    </div>
+    <div class="universe-stats" id="universe-stats"></div>
+  </div>
+
+  <div class="filters-bar" id="filters-bar"></div>
+
+  <div class="section-label">CLASSEMENT <span>& COLLECTION</span></div>
+  <div class="cards-grid" id="cards-grid"></div>
+</main>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="add-modal" onclick="handleOverlayClick(event,'add-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-form-title">AJOUTER</div>
+      <button class="modal-close" onclick="closeModal('add-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid" id="form-fields"></div>
+      <div class="rating-section">
+        <h4>NOTATION DÉTAILLÉE</h4>
+        <div id="criteria-inputs"></div>
+        <div class="total-score-display">
+          <div class="score-num" id="live-score">0.0</div>
+          <div class="score-info">
+            <strong>Note totale</strong>
+            sur 20 points
+          </div>
+        </div>
+      </div>
+      <div id="extra-section"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-danger" id="delete-btn" style="display:none" onclick="deleteCurrentItem()">Supprimer</button>
+      <button class="btn-secondary" onclick="closeModal('add-modal')">Annuler</button>
+      <button class="btn-primary" onclick="saveItem()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detail-modal" onclick="handleOverlayClick(event,'detail-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="detail-modal-title">DÉTAILS</div>
+      <button class="modal-close" onclick="closeModal('detail-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="detail-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="editCurrentItem()">✏️ Modifier</button>
+      <button class="btn-primary" onclick="closeModal('detail-modal')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- INSTALL BANNER -->
+<div class="install-banner" id="install-banner">
+  <div class="install-banner-icon">🎬</div>
+  <div class="install-banner-text">
+    <strong>Installer UNIVERSE</strong>
+    <span>Accès rapide depuis l'écran d'accueil</span>
+  </div>
+  <div class="install-banner-actions">
+    <button class="btn-dismiss" onclick="dismissInstall()">Plus tard</button>
+    <button class="btn-install" onclick="triggerInstall()">Installer</button>
+  </div>
+</div>
+
+<!-- UPDATE BANNER -->
+<div class="update-banner" id="update-banner">
+  <span>🔄 Mise à jour disponible</span>
+  <button class="btn-update" onclick="applyUpdate()">Recharger</button>
+</div>
+
+<!-- OFFLINE BADGE -->
+<div class="offline-badge" id="offline-badge">
+  <div class="offline-dot"></div>
+  Mode hors-ligne
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// =============================================
+// DATA STORE (localStorage)
+// =============================================
+const STORE_KEY = 'universe_media_db_v2';
+
+function loadDB() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return { films: [], series: [], livres: [], jeux: [] };
+}
+
+function saveDB() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(db));
+}
+
+let db = loadDB();
+let currentUniverse = 'films';
+let currentFilter = 'best';
+let currentPlatformFilter = 'all';
+let editingId = null;
+let detailId = null;
+
+// =============================================
+// CONFIG
+// =============================================
+const UNIVERSE_CONFIG = {
+  films: {
+    emoji: '🎬',
+    label: 'Films',
+    subtitle: 'Cinéma',
+    color: '#e8281e',
+    metaLabel: 'Réalisateur',
+    criteria: [
+      { key: 'histoire', label: 'Histoire / Émotion', max: 8 },
+      { key: 'acting', label: 'Acting / Jeu des acteurs', max: 4 },
+      { key: 'musique', label: 'Musique', max: 3 },
+      { key: 'visuel', label: 'Visuel (décors, image)', max: 3 },
+      { key: 'rythme', label: 'Rythme / Pacing', max: 2 },
+    ]
+  },
+  series: {
+    emoji: '📺',
+    label: 'Séries',
+    subtitle: 'Télévision',
+    color: '#6c5ce7',
+    metaLabel: 'Showrunner',
+    criteria: [
+      { key: 'histoire', label: 'Histoire / Émotion', max: 8 },
+      { key: 'acting', label: 'Acting / Jeu des acteurs', max: 4 },
+      { key: 'musique', label: 'Musique', max: 3 },
+      { key: 'visuel', label: 'Visuel (décors, image)', max: 3 },
+      { key: 'rythme', label: 'Rythme / Pacing', max: 2 },
+    ]
+  },
+  livres: {
+    emoji: '📚',
+    label: 'Livres',
+    subtitle: 'Bibliothèque',
+    color: '#27ae60',
+    metaLabel: 'Auteur',
+    criteria: [
+      { key: 'histoire', label: 'Histoire / Émotion', max: 8 },
+      { key: 'personnages', label: 'Personnages attachants', max: 5 },
+      { key: 'ecriture', label: 'Écriture / Style', max: 4 },
+      { key: 'univers', label: 'Univers / Immersion', max: 3 },
+    ]
+  },
+  jeux: {
+    emoji: '🎮',
+    label: 'Jeux vidéo',
+    subtitle: 'Gaming',
+    color: '#f39c12',
+    metaLabel: 'Studio',
+    criteria: [
+      { key: 'histoire', label: 'Histoire', max: 6 },
+      { key: 'visuel', label: 'Visuel / Graphismes', max: 5 },
+      { key: 'musique', label: 'Musique / Ambiance sonore', max: 4 },
+      { key: 'gameplay', label: 'Jouabilité / Gameplay', max: 5 },
+    ]
+  }
+};
+
+const PLATFORMS = ['PS5', 'PS4', 'Xbox Series', 'Xbox One', 'Nintendo Switch', 'PC', 'Mobile', 'Autre'];
+const GENRES_FILMS = ['Action', 'Comédie', 'Drame', 'Fantaisie', 'Horreur', 'Romance', 'SF', 'Thriller', 'Animation', 'Documentaire', 'Autre'];
+const GENRES_SERIES = ['Action', 'Comédie', 'Drame', 'Fantaisie', 'Horreur', 'Romance', 'SF', 'Thriller', 'Animation', 'Documentaire', 'Autre'];
+const GENRES_LIVRES = ['Roman', 'Fantasy', 'SF', 'Policier', 'Romance', 'Thriller', 'Biographie', 'BD/Manga', 'Essai', 'Autre'];
+const GENRES_JEUX = ['Action', 'RPG', 'FPS', 'Aventure', 'Simulation', 'Sport', 'Stratégie', 'Puzzle', 'Plateforme', 'Autre'];
+
+// =============================================
+// UNIVERSE SWITCH
+// =============================================
+function switchUniverse(u) {
+  currentUniverse = u;
+  currentFilter = 'best';
+  currentPlatformFilter = 'all';
+  document.body.setAttribute('data-universe', u);
+  document.querySelectorAll('.nav-btn').forEach((b, i) => {
+    const universes = ['films','series','livres','jeux'];
+    b.classList.toggle('active', universes[i] === u);
+  });
+  renderHeader();
+  renderFilters();
+  renderCards();
+}
+
+// =============================================
+// RENDER HEADER
+// =============================================
+function renderHeader() {
+  const cfg = UNIVERSE_CONFIG[currentUniverse];
+  const items = db[currentUniverse];
+  document.getElementById('universe-subtitle').textContent = cfg.subtitle;
+  document.getElementById('universe-title-text').textContent = cfg.label.toUpperCase();
+
+  const total = items.length;
+  const avg = total > 0 ? (items.reduce((s, i) => s + calcTotal(i, currentUniverse), 0) / total).toFixed(1) : '—';
+  const favs = items.filter(i => i.heart).length;
+
+  document.getElementById('universe-stats').innerHTML = `
+    <div class="stat-pill"><strong>${total}</strong> titre${total > 1 ? 's' : ''}</div>
+    <div class="stat-pill"><strong>${avg}</strong> /20 moy.</div>
+    <div class="stat-pill">❤️ <strong>${favs}</strong> coup${favs > 1 ? 's' : ''} de cœur</div>
+  `;
+}
+
+// =============================================
+// RENDER FILTERS
+// =============================================
+function renderFilters() {
+  const bar = document.getElementById('filters-bar');
+  let html = `
+    <button class="filter-btn ${currentFilter==='best'?'active':''}" onclick="setFilter('best')">⭐ Meilleure note</button>
+    <button class="filter-btn heart ${currentFilter==='heart'?'active':''}" onclick="setFilter('heart')">❤️ Coups de cœur</button>
+    <button class="filter-btn ${currentFilter==='recent'?'active':''}" onclick="setFilter('recent')">🕒 Plus récents</button>
+  `;
+  if (currentUniverse === 'series') {
+    html += `<button class="filter-btn ${currentFilter==='progress'?'active':''}" onclick="setFilter('progress')">📺 En cours</button>`;
+  }
+  if (currentUniverse === 'jeux') {
+    html += `<select class="filter-select" onchange="setPlatform(this.value)">
+      <option value="all">🎮 Toutes plateformes</option>
+      ${PLATFORMS.map(p => `<option value="${p}" ${currentPlatformFilter===p?'selected':''}>${p}</option>`).join('')}
+    </select>`;
+  }
+  bar.innerHTML = html;
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  renderFilters();
+  renderCards();
+}
+function setPlatform(p) {
+  currentPlatformFilter = p;
+  renderCards();
+}
+
+// =============================================
+// CALC TOTAL
+// =============================================
+function calcTotal(item, universe) {
+  const criteria = UNIVERSE_CONFIG[universe].criteria;
+  return criteria.reduce((sum, c) => sum + (parseFloat(item.scores?.[c.key]) || 0), 0);
+}
+
+// =============================================
+// RENDER CARDS
+// =============================================
+function renderCards() {
+  const grid = document.getElementById('cards-grid');
+  let items = [...db[currentUniverse]];
+
+  // Platform filter (jeux)
+  if (currentUniverse === 'jeux' && currentPlatformFilter !== 'all') {
+    items = items.filter(i => i.platform === currentPlatformFilter);
+  }
+
+  // Filter
+  if (currentFilter === 'heart') items = items.filter(i => i.heart);
+  if (currentFilter === 'progress') items = items.filter(i => {
+    if (!i.seasons || !i.seasons.length) return false;
+    const lastSeason = i.seasons[i.seasons.length - 1];
+    return lastSeason && lastSeason.watched < lastSeason.total;
+  });
+
+  // Sort
+  if (currentFilter === 'best' || currentFilter === 'heart') {
+    items.sort((a, b) => calcTotal(b, currentUniverse) - calcTotal(a, currentUniverse));
+  } else if (currentFilter === 'recent') {
+    items.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
+  } else if (currentFilter === 'progress') {
+    items.sort((a, b) => {
+      const progA = seriesProgress(a);
+      const progB = seriesProgress(b);
+      return progB.pct - progA.pct;
+    });
+  }
+
+  let html = '';
+
+  items.forEach((item, idx) => {
+    const total = calcTotal(item, currentUniverse);
+    const pct = (total / 20 * 100).toFixed(0);
+    const rank = db[currentUniverse]
+      .slice()
+      .sort((a, b) => calcTotal(b, currentUniverse) - calcTotal(a, currentUniverse))
+      .findIndex(i => i.id === item.id) + 1;
+    const cfg = UNIVERSE_CONFIG[currentUniverse];
+
+    const coverHtml = item.cover
+      ? `<div class="card-cover"><img src="${escHtml(item.cover)}" alt="" onerror="this.parentNode.innerHTML='<div class=\\'card-cover-placeholder\\'>${cfg.emoji}</div>'"></div>`
+      : `<div class="card-cover-placeholder">${cfg.emoji}</div>`;
+
+    let extraHtml = '';
+    if (currentUniverse === 'jeux' && item.platform) {
+      extraHtml += `<div class="card-platform">🎮 ${escHtml(item.platform)}</div>`;
+    }
+    if (currentUniverse === 'series' && item.seasons && item.seasons.length) {
+      const prog = seriesProgress(item);
+      extraHtml += `
+        <div class="card-progress">
+          <div class="card-progress-text">S${item.seasons.length} · ${prog.watched}/${prog.total} ép.</div>
+          <div class="card-progress-bar"><div class="card-progress-fill" style="width:${prog.pct}%"></div></div>
+        </div>
+      `;
+    }
+
+    html += `
+      <div class="media-card" onclick="openDetail('${item.id}')" style="animation-delay:${idx*0.05}s">
+        <div class="card-rank">#${rank}</div>
+        <button class="card-heart ${item.heart?'active':''}" onclick="toggleHeart(event,'${item.id}')" title="Coup de cœur">
+          ${item.heart ? '❤️' : '🤍'}
+        </button>
+        ${coverHtml}
+        <div class="card-body">
+          <div class="card-title" title="${escHtml(item.title)}">${escHtml(item.title)}</div>
+          <div class="card-meta">${escHtml(item.meta || '')}</div>
+          <div class="card-score-row">
+            <div class="card-score">${total.toFixed(1)}<small>/20</small></div>
+            <div class="score-bar-mini"><div class="score-bar-mini-fill" style="width:${pct}%"></div></div>
+          </div>
+          ${extraHtml}
+        </div>
+      </div>
+    `;
+  });
+
+  if (items.length === 0) {
+    const msg = currentFilter === 'heart' ? 'Aucun coup de cœur dans cet univers.' :
+                currentFilter === 'progress' ? 'Aucune série en cours.' :
+                `Ajoutez votre premier contenu dans ${UNIVERSE_CONFIG[currentUniverse].label} !`;
+    html += `
+      <div class="empty-state">
+        <div class="empty-icon">${UNIVERSE_CONFIG[currentUniverse].emoji}</div>
+        <h3>Rien à afficher</h3>
+        <p>${msg}</p>
+      </div>
+    `;
+  }
+
+  // Add button
+  html += `
+    <div class="add-card" onclick="openAddModal()">
+      <div class="add-card-icon">＋</div>
+      <div>Ajouter ${currentUniverse === 'jeux' ? 'un jeu' : currentUniverse === 'series' ? 'une série' : currentUniverse === 'livres' ? 'un livre' : 'un film'}</div>
+    </div>
+  `;
+
+  grid.innerHTML = html;
+}
+
+function seriesProgress(item) {
+  if (!item.seasons || !item.seasons.length) return { watched: 0, total: 0, pct: 0 };
+  const watched = item.seasons.reduce((s, x) => s + (parseInt(x.watched) || 0), 0);
+  const total = item.seasons.reduce((s, x) => s + (parseInt(x.total) || 0), 0);
+  return { watched, total, pct: total > 0 ? Math.round(watched / total * 100) : 0 };
+}
+
+// =============================================
+// TOGGLE HEART
+// =============================================
+function toggleHeart(e, id) {
+  e.stopPropagation();
+  const item = db[currentUniverse].find(i => i.id === id);
+  if (!item) return;
+  item.heart = !item.heart;
+  saveDB();
+  renderHeader();
+  renderCards();
+  showToast(item.heart ? '❤️ Coup de cœur ajouté !' : '💔 Retiré des coups de cœur');
+}
+
+// =============================================
+// OPEN ADD MODAL
+// =============================================
+function openAddModal(id = null) {
+  editingId = id;
+  const cfg = UNIVERSE_CONFIG[currentUniverse];
+  const item = id ? db[currentUniverse].find(i => i.id === id) : null;
+
+  document.getElementById('modal-form-title').textContent = id ? 'MODIFIER' : 'AJOUTER';
+  document.getElementById('delete-btn').style.display = id ? 'block' : 'none';
+
+  // Basic fields
+  const genresList = currentUniverse === 'films' ? GENRES_FILMS :
+                     currentUniverse === 'series' ? GENRES_SERIES :
+                     currentUniverse === 'livres' ? GENRES_LIVRES : GENRES_JEUX;
+
+  let fieldsHtml = `
+    <div class="form-group full">
+      <label>Titre *</label>
+      <input id="f-title" type="text" placeholder="Titre..." value="${escHtml(item?.title || '')}">
+    </div>
+    <div class="form-group">
+      <label>${cfg.metaLabel}</label>
+      <input id="f-meta" type="text" placeholder="${cfg.metaLabel}..." value="${escHtml(item?.meta || '')}">
+    </div>
+    <div class="form-group">
+      <label>Année</label>
+      <input id="f-year" type="number" placeholder="2024" value="${item?.year || ''}">
+    </div>
+    <div class="form-group">
+      <label>Genre</label>
+      <select id="f-genre">
+        <option value="">— Choisir —</option>
+        ${genresList.map(g => `<option value="${g}" ${item?.genre===g?'selected':''}>${g}</option>`).join('')}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Image de couverture (URL)</label>
+      <input id="f-cover" type="url" placeholder="https://..." value="${escHtml(item?.cover || '')}">
+    </div>
+  `;
+
+  if (currentUniverse === 'jeux') {
+    fieldsHtml += `
+      <div class="form-group">
+        <label>Plateforme</label>
+        <select id="f-platform">
+          <option value="">— Choisir —</option>
+          ${PLATFORMS.map(p => `<option value="${p}" ${item?.platform===p?'selected':''}>${p}</option>`).join('')}
+        </select>
+      </div>
+    `;
+  }
+
+  document.getElementById('form-fields').innerHTML = fieldsHtml;
+
+  // Criteria
+  let criteriaHtml = '';
+  cfg.criteria.forEach(c => {
+    const val = item?.scores?.[c.key] ?? 0;
+    criteriaHtml += `
+      <div class="criterion-row">
+        <div class="criterion-label">${c.label} <small>/${c.max}</small></div>
+        <div class="criterion-input">
+          <input type="range" id="cr-${c.key}" min="0" max="${c.max}" step="0.5" value="${val}" 
+            oninput="updateLiveScore();document.getElementById('cv-${c.key}').textContent=parseFloat(this.value).toFixed(1)+'/${c.max}'">
+          <div class="criterion-value" id="cv-${c.key}">${parseFloat(val).toFixed(1)}/${c.max}</div>
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById('criteria-inputs').innerHTML = criteriaHtml;
+
+  // Extra: series seasons
+  let extraHtml = '';
+  if (currentUniverse === 'series') {
+    const seasons = item?.seasons || [{ total: 10, watched: 0 }];
+    extraHtml = `
+      <div class="rating-section">
+        <h4>SUIVI ÉPISODES</h4>
+        <div id="seasons-list">${renderSeasonsInputs(seasons)}</div>
+        <button type="button" class="btn-secondary" style="margin-top:10px;font-size:13px;" onclick="addSeason()">+ Ajouter une saison</button>
+      </div>
+    `;
+  }
+  document.getElementById('extra-section').innerHTML = extraHtml;
+
+  updateLiveScore();
+  openModal('add-modal');
+}
+
+function renderSeasonsInputs(seasons) {
+  return seasons.map((s, i) => `
+    <div class="season-row" id="season-row-${i}">
+      <div class="season-label">Saison ${i+1}</div>
+      <div class="season-input">
+        <input type="number" id="s-watched-${i}" min="0" max="${s.total||99}" value="${s.watched||0}" style="width:60px;text-align:center;" placeholder="Vu">
+        <span class="season-ep-label"> / </span>
+        <input type="number" id="s-total-${i}" min="1" value="${s.total||10}" style="width:60px;text-align:center;" placeholder="Total" oninput="document.getElementById('s-watched-${i}').max=this.value">
+        <span class="season-ep-label"> ép.</span>
+        ${i > 0 ? `<button type="button" onclick="removeSeason(${i})" style="background:none;border:none;color:#e74c3c;cursor:pointer;margin-left:6px;font-size:16px;">✕</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+let seasonCount = 1;
+function addSeason() {
+  const list = document.getElementById('seasons-list');
+  const rows = list.querySelectorAll('.season-row');
+  seasonCount = rows.length;
+  const newIdx = seasonCount;
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="season-row" id="season-row-${newIdx}">
+      <div class="season-label">Saison ${newIdx+1}</div>
+      <div class="season-input">
+        <input type="number" id="s-watched-${newIdx}" min="0" max="99" value="0" style="width:60px;text-align:center;">
+        <span class="season-ep-label"> / </span>
+        <input type="number" id="s-total-${newIdx}" min="1" value="10" style="width:60px;text-align:center;" oninput="document.getElementById('s-watched-${newIdx}').max=this.value">
+        <span class="season-ep-label"> ép.</span>
+        <button type="button" onclick="removeSeason(${newIdx})" style="background:none;border:none;color:#e74c3c;cursor:pointer;margin-left:6px;font-size:16px;">✕</button>
+      </div>
+    </div>
+  `;
+  list.appendChild(div.firstElementChild);
+}
+
+function removeSeason(idx) {
+  const row = document.getElementById(`season-row-${idx}`);
+  if (row) row.remove();
+  // Re-number labels
+  const list = document.getElementById('seasons-list');
+  list.querySelectorAll('.season-row .season-label').forEach((el, i) => {
+    el.textContent = `Saison ${i+1}`;
+  });
+}
+
+function updateLiveScore() {
+  const cfg = UNIVERSE_CONFIG[currentUniverse];
+  let total = 0;
+  cfg.criteria.forEach(c => {
+    const el = document.getElementById(`cr-${c.key}`);
+    if (el) total += parseFloat(el.value) || 0;
+  });
+  document.getElementById('live-score').textContent = total.toFixed(1);
+}
+
+// =============================================
+// SAVE ITEM
+// =============================================
+function saveItem() {
+  const title = document.getElementById('f-title')?.value?.trim();
+  if (!title) { showToast('⚠️ Le titre est obligatoire'); return; }
+
+  const cfg = UNIVERSE_CONFIG[currentUniverse];
+  const scores = {};
+  cfg.criteria.forEach(c => {
+    const el = document.getElementById(`cr-${c.key}`);
+    scores[c.key] = el ? parseFloat(el.value) : 0;
+  });
+
+  // Seasons for series
+  let seasons = [];
+  if (currentUniverse === 'series') {
+    const list = document.getElementById('seasons-list');
+    if (list) {
+      const rows = list.querySelectorAll('.season-row');
+      rows.forEach((row, i) => {
+        const idx = row.id.replace('season-row-', '');
+        const watched = parseInt(document.getElementById(`s-watched-${idx}`)?.value) || 0;
+        const total = parseInt(document.getElementById(`s-total-${idx}`)?.value) || 10;
+        seasons.push({ watched, total });
+      });
+    }
+  }
+
+  const item = {
+    id: editingId || generateId(),
+    title,
+    meta: document.getElementById('f-meta')?.value?.trim() || '',
+    year: document.getElementById('f-year')?.value || '',
+    genre: document.getElementById('f-genre')?.value || '',
+    cover: document.getElementById('f-cover')?.value?.trim() || '',
+    scores,
+    heart: editingId ? (db[currentUniverse].find(i => i.id === editingId)?.heart || false) : false,
+    addedAt: editingId ? (db[currentUniverse].find(i => i.id === editingId)?.addedAt || Date.now()) : Date.now(),
+  };
+
+  if (currentUniverse === 'jeux') {
+    item.platform = document.getElementById('f-platform')?.value || '';
+  }
+  if (currentUniverse === 'series') {
+    item.seasons = seasons;
+  }
+
+  if (editingId) {
+    const idx = db[currentUniverse].findIndex(i => i.id === editingId);
+    if (idx >= 0) db[currentUniverse][idx] = item;
+  } else {
+    db[currentUniverse].push(item);
+  }
+
+  saveDB();
+  closeModal('add-modal');
+  renderHeader();
+  renderCards();
+  showToast(editingId ? '✅ Modifié avec succès !' : '✅ Ajouté à la collection !');
+  editingId = null;
+}
+
+// =============================================
+// DELETE ITEM
+// =============================================
+function deleteCurrentItem() {
+  if (!editingId) return;
+  if (!confirm('Supprimer ce contenu définitivement ?')) return;
+  db[currentUniverse] = db[currentUniverse].filter(i => i.id !== editingId);
+  saveDB();
+  closeModal('add-modal');
+  renderHeader();
+  renderCards();
+  showToast('🗑️ Supprimé.');
+  editingId = null;
+}
+
+// =============================================
+// DETAIL MODAL
+// =============================================
+function openDetail(id) {
+  detailId = id;
+  const item = db[currentUniverse].find(i => i.id === id);
+  if (!item) return;
+  const cfg = UNIVERSE_CONFIG[currentUniverse];
+  const total = calcTotal(item, currentUniverse);
+
+  document.getElementById('detail-modal-title').textContent = escHtml(item.title).toUpperCase();
+
+  const coverHtml = item.cover
+    ? `<div class="detail-cover"><img src="${escHtml(item.cover)}" alt="" onerror="this.parentNode.className='detail-cover-placeholder';this.parentNode.innerHTML='${cfg.emoji}'"></div>`
+    : `<div class="detail-cover-placeholder">${cfg.emoji}</div>`;
+
+  let tagsHtml = '';
+  if (item.meta) tagsHtml += `<span class="detail-tag">👤 ${escHtml(item.meta)}</span>`;
+  if (item.year) tagsHtml += `<span class="detail-tag">📅 ${item.year}</span>`;
+  if (item.genre) tagsHtml += `<span class="detail-tag">🏷️ ${escHtml(item.genre)}</span>`;
+  if (currentUniverse === 'jeux' && item.platform) tagsHtml += `<span class="detail-tag">🎮 ${escHtml(item.platform)}</span>`;
+
+  // Criteria bars
+  let barsHtml = '<div class="criteria-bars">';
+  cfg.criteria.forEach(c => {
+    const val = item.scores?.[c.key] || 0;
+    const pct = (val / c.max * 100).toFixed(0);
+    barsHtml += `
+      <div class="crit-bar-row">
+        <div class="crit-bar-label">${c.label}</div>
+        <div class="crit-bar-track"><div class="crit-bar-fill" style="width:${pct}%"></div></div>
+        <div class="crit-bar-val">${parseFloat(val).toFixed(1)}/${c.max}</div>
+      </div>
+    `;
+  });
+  barsHtml += '</div>';
+
+  // Series seasons
+  let seasonsHtml = '';
+  if (currentUniverse === 'series' && item.seasons && item.seasons.length) {
+    const prog = seriesProgress(item);
+    seasonsHtml = `
+      <div style="margin-top:20px;">
+        <div class="section-label" style="font-size:15px; margin-bottom:12px;">PROGRESSION · <span>${prog.watched}/${prog.total} épisodes (${prog.pct}%)</span></div>
+        <div class="seasons-grid">
+          ${item.seasons.map((s, i) => {
+            const pct = s.total > 0 ? Math.round((s.watched||0)/s.total*100) : 0;
+            return `
+              <div class="season-card">
+                <div class="s-num">S${i+1}</div>
+                <div class="s-prog">${s.watched||0}/${s.total} ép.</div>
+                <div class="season-prog-bar"><div class="season-prog-fill" style="width:${pct}%"></div></div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // Radar chart
+  const canvasId = `radar-${id}`;
+  const radarHtml = `
+    <div class="radar-container" style="margin-top:16px;">
+      <canvas id="${canvasId}" class="radar" width="280" height="280"></canvas>
+    </div>
+  `;
+
+  document.getElementById('detail-modal-body').innerHTML = `
+    <div class="detail-cover-row">
+      ${coverHtml}
+      <div class="detail-info">
+        <div class="detail-title">${escHtml(item.title)}</div>
+        <div class="detail-meta-row">${tagsHtml}</div>
+        <div class="detail-score-big">${total.toFixed(1)}<small>/20</small></div>
+        <button class="detail-heart-btn ${item.heart?'active':''}" onclick="toggleHeartDetail('${item.id}')">
+          ${item.heart ? '❤️ Coup de cœur !' : '🤍 Ajouter aux favoris'}
+        </button>
+      </div>
+    </div>
+    <div class="section-label" style="font-size:15px;margin-bottom:12px;">NOTES DÉTAILLÉES</div>
+    ${barsHtml}
+    ${radarHtml}
+    ${seasonsHtml}
+  `;
+
+  openModal('detail-modal');
+
+  // Draw radar after open
+  setTimeout(() => drawRadar(canvasId, item, cfg), 50);
+}
+
+function toggleHeartDetail(id) {
+  const item = db[currentUniverse].find(i => i.id === id);
+  if (!item) return;
+  item.heart = !item.heart;
+  saveDB();
+  renderHeader();
+  renderCards();
+  const btn = document.querySelector('.detail-heart-btn');
+  if (btn) {
+    btn.classList.toggle('active', item.heart);
+    btn.innerHTML = item.heart ? '❤️ Coup de cœur !' : '🤍 Ajouter aux favoris';
+  }
+  showToast(item.heart ? '❤️ Coup de cœur ajouté !' : '💔 Retiré des coups de cœur');
+}
+
+function editCurrentItem() {
+  closeModal('detail-modal');
+  setTimeout(() => openAddModal(detailId), 200);
+}
+
+// =============================================
+// RADAR CHART
+// =============================================
+function drawRadar(canvasId, item, cfg) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2, r = Math.min(W,H)/2 - 40;
+  const n = cfg.criteria.length;
+  const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim();
+
+  ctx.clearRect(0,0,W,H);
+
+  // Web grid
+  [0.2,0.4,0.6,0.8,1].forEach(level => {
+    ctx.beginPath();
+    cfg.criteria.forEach((c, i) => {
+      const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+      const x = cx + Math.cos(angle) * r * level;
+      const y = cy + Math.sin(angle) * r * level;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // Axes
+  cfg.criteria.forEach((c, i) => {
+    const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(angle)*r, cy + Math.sin(angle)*r);
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // Data shape
+  ctx.beginPath();
+  cfg.criteria.forEach((c, i) => {
+    const val = item.scores?.[c.key] || 0;
+    const ratio = val / c.max;
+    const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+    const x = cx + Math.cos(angle) * r * ratio;
+    const y = cy + Math.sin(angle) * r * ratio;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+  ctx.fillStyle = accent.replace(')', ',0.25)').replace('rgb','rgba').replace('#','rgba(') + (accent.startsWith('#') ? '' : '');
+  // Simple fill approach
+  ctx.fillStyle = 'rgba(255,255,255,0.1)';
+  ctx.fill();
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Dots
+  cfg.criteria.forEach((c, i) => {
+    const val = item.scores?.[c.key] || 0;
+    const ratio = val / c.max;
+    const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+    const x = cx + Math.cos(angle) * r * ratio;
+    const y = cy + Math.sin(angle) * r * ratio;
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI*2);
+    ctx.fillStyle = accent;
+    ctx.fill();
+  });
+
+  // Labels
+  ctx.font = '11px DM Sans, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  cfg.criteria.forEach((c, i) => {
+    const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+    const lx = cx + Math.cos(angle) * (r + 24);
+    const ly = cy + Math.sin(angle) * (r + 24);
+    const shortLabel = c.label.split('/')[0].trim().split(' ').slice(0,2).join(' ');
+    ctx.fillText(shortLabel, lx, ly);
+  });
+}
+
+// =============================================
+// MODAL HELPERS
+// =============================================
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleOverlayClick(e, id) {
+  if (e.target === document.getElementById(id)) closeModal(id);
+}
+
+// =============================================
+// HELPERS
+// =============================================
+function generateId() {
+  return Math.random().toString(36).substr(2,9) + Date.now().toString(36);
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+let toastTimeout;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// =============================================
+// KEYBOARD
+// =============================================
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal('add-modal');
+    closeModal('detail-modal');
+  }
+});
+
+// =============================================
+// INIT WITH SAMPLE DATA
+// =============================================
+function seedSampleData() {
+  if (db.films.length || db.series.length || db.livres.length || db.jeux.length) return;
+
+  db.films = [
+    { id: 'f1', title: 'Dune: Part Two', meta: 'Denis Villeneuve', year: '2024', genre: 'SF', cover: 'https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg', scores: { histoire: 7.5, acting: 3.5, musique: 3, visuel: 3, rythme: 1.5 }, heart: true, addedAt: Date.now()-5 },
+    { id: 'f2', title: 'Oppenheimer', meta: 'Christopher Nolan', year: '2023', genre: 'Drame', cover: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg', scores: { histoire: 7, acting: 4, musique: 2.5, visuel: 2.5, rythme: 1.5 }, heart: false, addedAt: Date.now()-4 },
+    { id: 'f3', title: 'Poor Things', meta: 'Yorgos Lanthimos', year: '2023', genre: 'Drame', cover: 'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXNbM6ExNLRR8yp.jpg', scores: { histoire: 6.5, acting: 4, musique: 2, visuel: 3, rythme: 1.5 }, heart: true, addedAt: Date.now()-3 },
+  ];
+
+  db.series = [
+    { id: 's1', title: 'The Last of Us', meta: 'Craig Mazin', year: '2023', genre: 'Drame', cover: 'https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg', scores: { histoire: 7.5, acting: 4, musique: 2.5, visuel: 2.5, rythme: 1.5 }, heart: true, seasons: [{ watched: 9, total: 9 }, { watched: 3, total: 7 }], addedAt: Date.now()-5 },
+    { id: 's2', title: 'Succession', meta: 'Jesse Armstrong', year: '2018', genre: 'Drame', cover: 'https://image.tmdb.org/t/p/w500/e2X4jTMki6543EbrNmGBNYgmYB1.jpg', scores: { histoire: 8, acting: 4, musique: 3, visuel: 2.5, rythme: 2 }, heart: true, seasons: [{ watched: 10, total: 10 }, { watched: 10, total: 10 }, { watched: 9, total: 9 }, { watched: 10, total: 10 }], addedAt: Date.now()-4 },
+  ];
+
+  db.livres = [
+    { id: 'l1', title: 'Dune', meta: 'Frank Herbert', year: '1965', genre: 'SF', cover: 'https://covers.openlibrary.org/b/id/8391919-L.jpg', scores: { histoire: 8, personnages: 4.5, ecriture: 3.5, univers: 3 }, heart: true, addedAt: Date.now()-5 },
+    { id: 'l2', title: 'Le Comte de Monte-Cristo', meta: 'Alexandre Dumas', year: '1844', genre: 'Roman', cover: 'https://covers.openlibrary.org/b/id/12003188-L.jpg', scores: { histoire: 7.5, personnages: 4, ecriture: 4, univers: 2.5 }, heart: false, addedAt: Date.now()-3 },
+  ];
+
+  db.jeux = [
+    { id: 'j1', title: 'Elden Ring', meta: 'FromSoftware', year: '2022', genre: 'RPG', cover: 'https://image.tmdb.org/t/p/w500/zV8pLCiE27EHnAGS6Z0pBW2sQQf.jpg', scores: { histoire: 5, visuel: 4.5, musique: 3.5, gameplay: 5 }, heart: true, platform: 'PS5', addedAt: Date.now()-5 },
+    { id: 'j2', title: 'The Legend of Zelda: TotK', meta: 'Nintendo EPD', year: '2023', genre: 'Aventure', cover: 'https://assets.nintendo.com/image/upload/ar_16:9,b_auto:border,c_lpad/b_white/f_auto/q_auto/dpr_auto/c_scale,w_300/v1/ncom/software/switch/70010000063714/d7d11ced25aa5a29ec0e31f17df4d4e1a5b97e0af4a9ffc1ad11f95c34b1dcf5', scores: { histoire: 4, visuel: 4, musique: 3.5, gameplay: 5 }, heart: true, platform: 'Nintendo Switch', addedAt: Date.now()-3 },
+  ];
+
+  saveDB();
+}
+
+// =============================================
+// START
+// =============================================
+seedSampleData();
+switchUniverse('films');
+</script>
+
+
+
+
+
+
+
+<script>
+// PWA - manifest inline
+(function() {
+  try {
+    var manifestObj = {
+      "name": "UNIVERSE Media Tracker",
+      "short_name": "UNIVERSE",
+      "start_url": "./",
+      "display": "standalone",
+      "background_color": "#0a0000",
+      "theme_color": "#e8281e",
+      "icons": [
+        {"src": "https://bizaroid20.github.io/universapp/icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+        {"src": "https://bizaroid20.github.io/universapp/icons/icon-512.png", "sizes": "512x512", "type": "image/png"}
+      ]
+    };
+    var blob = new Blob([JSON.stringify(manifestObj)], {type: 'application/manifest+json'});
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = url;
+    document.head.appendChild(link);
+  } catch(e) {}
+
+  // Install prompt
+  var deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(function() {
+      var banner = document.getElementById('install-banner');
+      if (banner) banner.classList.add('visible');
+    }, 3000);
+  });
+
+  window.triggerInstall = function() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt = null;
+    }
+    var banner = document.getElementById('install-banner');
+    if (banner) banner.classList.remove('visible');
+  };
+
+  window.dismissInstall = function() {
+    var banner = document.getElementById('install-banner');
+    if (banner) banner.classList.remove('visible');
+  };
+
+  window.applyUpdate = function() {
+    window.location.reload();
+  };
+
+  // Online/offline
+  window.addEventListener('offline', function() {
+    var b = document.getElementById('offline-badge');
+    if (b) b.classList.add('visible');
+    showToast('Mode hors-ligne');
+  });
+  window.addEventListener('online', function() {
+    var b = document.getElementById('offline-badge');
+    if (b) b.classList.remove('visible');
+    showToast('Connexion retablie');
+  });
+
+  // Hide splash
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      var splash = document.getElementById('splash');
+      if (splash) {
+        splash.classList.add('hidden');
+        setTimeout(function() { if(splash.parentNode) splash.parentNode.removeChild(splash); }, 700);
+      }
+    }, 800);
+  });
+
+  // Sync theme color
+  window.syncThemeColor = function() {
+    var colors = {films:'#e8281e', series:'#6c5ce7', livres:'#27ae60', jeux:'#f39c12'};
+    var meta = document.getElementById('theme-color-meta');
+    if (meta) meta.setAttribute('content', colors[currentUniverse] || '#e8281e');
+    history.replaceState(null, '', '#' + currentUniverse);
+  };
+
+  var origSwitch = window.switchUniverse;
+  window.switchUniverse = function(u) {
+    origSwitch(u);
+    if (window.syncThemeColor) syncThemeColor();
+  };
+
+})();
+</script>
+
+</body>
+</html>
